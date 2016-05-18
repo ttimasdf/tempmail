@@ -12,7 +12,7 @@
 	{%- if domains|length > 1 -%}
 		<select name="domain">
 		{%- for domain in domains -%}
-			<option>{{domain.name}}</option>
+			<option>{{domain}}</option>
 		{%- endfor -%}
 		</select>
 	{%- else -%}

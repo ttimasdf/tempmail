@@ -3,11 +3,7 @@ from sqlobject import AND
 import models
 
 def get_or_create_domain(name):
-	try:
-		domain = models.Domain.select(models.Domain.q.name==name)[0]
-	except IndexError:
-		domain = models.Domain(name=name)
-	return domain
+	return name
 
 def get_or_create_user(name, domain):
 	try:

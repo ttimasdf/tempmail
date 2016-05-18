@@ -11,7 +11,6 @@ from flask import url_for
 from sqlobject import AND
 
 from models import connect
-from models import Domain
 from models import Mail
 from models import User
 import settings
@@ -21,7 +20,7 @@ app = Flask(__name__)
 @app.route("/")
 def welcome():
 	try:
-		domains = list(Domain.select())
+		domains = settings.MY_DOMAINS
 	except IndexError:
 		domains = []
 	about = settings.ABOUT
@@ -43,7 +42,7 @@ def app_redirect():
 @app.route("/<user>/")
 def list_mail(user, domain=settings.MY_DOMAINS[0]):
 	try:
-		mails = list(Mail.select(Mail.q.user==User.select(AND(User.q.name==user, Domain.q.name==domain))[0]))
+		mails = list(Mail.select(Mail.q.user==User.select(AND(User.q.name==user, User.q.domain==domain))[0]))
 	except IndexError:
 		mails = []
 	return render_template('list_mail.html', **locals())
@@ -52,7 +51,7 @@ def list_mail(user, domain=settings.MY_DOMAINS[0]):
 @app.route("/<user>/<int:mail_id>/")
 def show_mail(user, mail_id, domain=settings.MY_DOMAINS[0]):
 	try:
-		mail = list(Mail.select(AND(Mail.q.user==User.select(AND(User.q.name==user, Domain.q.name==domain))[0],
+		mail = list(Mail.select(AND(Mail.q.user==User.select(AND(User.q.name==user, User.q.domain==domain))[0],
 									Mail.q.id==mail_id)))[0]
 	except IndexError:
 		abort(404)
@@ -67,7 +66,7 @@ def show_mail(user, mail_id, domain=settings.MY_DOMAINS[0]):
 @app.route("/<user>/<int:mail_id>/delete/")
 def delete_mail(user, mail_id, domain=settings.MY_DOMAINS[0]):
 	try:
-		mail = list(Mail.select(AND(Mail.q.user==User.select(AND(User.q.name==user, Domain.q.name==domain))[0],
+		mail = list(Mail.select(AND(Mail.q.user==User.select(AND(User.q.name==user, User.q.domain==domain))[0],
 									Mail.q.id==mail_id)))[0]
 	except IndexError:
 		abort(404)

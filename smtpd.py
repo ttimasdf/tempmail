@@ -12,7 +12,6 @@ from settings import MY_DOMAINS
 from settings import SMTPD_HOST
 from settings import SMTPD_PORT
 from models import connect
-from models import Domain
 from models import Mail
 from models import User
 from __init__ import get_or_create_domain

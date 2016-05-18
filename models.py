@@ -5,12 +5,9 @@ from settings import DB_URI
 def connect():
 	sqlhub.processConnection = connectionForURI(DB_URI)
 
-class Domain(SQLObject):
-	name = UnicodeCol(length=64, unique=True)
-
 class User(SQLObject):
-	name = UnicodeCol(length=64, unique=True)
-	domain = ForeignKey('Domain')
+	name = UnicodeCol(length=64)
+	domain = UnicodeCol(length=64)
 
 class Mail(SQLObject):
 	user = ForeignKey('User')
@@ -30,7 +27,6 @@ class Mail(SQLObject):
 if __name__ == "__main__":
 	connect()
 	print "Creating tables..."
-	Domain.createTable()
 	User.createTable()
 	Mail.createTable()
 	print "Done."
